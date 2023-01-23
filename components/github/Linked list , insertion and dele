@@ -1,0 +1,150 @@
+#include <iostream>
+using namespace std;
+class node{
+    public:
+    int data;
+    node*next;
+    node(int d){
+        data=d;
+        next=NULL;
+    }
+};
+
+void insertathead(node*&head, node*&tail, int d){
+    node*n= new node(d);
+    if(head==NULL){
+        head=n;
+        tail=n;
+    }
+    else{
+        n->next=head;
+        head=n;
+    }
+}
+void insertattail(node*&head, node*&tail, int d){
+    node*n=new node(d);
+    if(head==NULL){
+        head=n;
+        tail=n;
+    }
+    else{
+        tail->next=n;
+        tail=n;
+    }
+}
+int lengthofll(node*head){
+    int c=0;
+    while(head!=NULL){
+        c++;
+        head=head->next;
+    }
+    return c;
+}
+void insertatanyposition(node*&head,node*&tail,int d, int posi){
+    if(posi==0){
+        insertathead(head,tail,d);
+    }
+    else if(posi>=lengthofll(head)){
+        insertattail(head,tail,d);
+    }
+    else{
+        node*n=new node(d);
+        node*temp=head;
+        int cou=1;
+        while(cou<=posi-1){
+            temp=temp->next;
+            cou++;
+        }
+        n->next=temp->next;
+        temp->next=n;
+    }
+}
+void deleteathead(node*&head,node*&tail){
+    if(head==NULL){
+        return;
+    }
+    else if(head->next==NULL){
+        delete head;
+        head=NULL;
+        tail=NULL;
+    }
+    else {
+        node*temp=head;
+        head=head->next;
+        delete temp;
+        temp= NULL;
+    }
+}
+void  deleteattail(node*&head, node*&tail){
+     if(head==NULL){
+         return;
+     }
+     else if (head->next==NULL){
+         delete head;
+         head=NULL;
+         tail=NULL;
+     }
+     else {
+         node*temp=head;
+         while(temp->next!=tail){
+             temp=temp->next;
+         }
+         delete tail;
+         temp->next=NULL;
+         tail=temp;
+     }
+ }
+void deleteatanyposi(node*&head, node*&tail, int posi){
+     if(posi==0){
+         deleteathead(head,tail);
+     }
+     else if (posi>=lengthofll(head)){
+         deleteattail(head,tail);
+     }
+     else {
+         node*temp=head;
+         int cou=1;
+         while(cou<posi){
+             temp=temp->next;
+             cou++;
+         }
+         node*d=temp->next;
+         temp->next=d->next;
+         delete d;
+         d=NULL;
+     }
+ }
+void printll(node*head){
+    while(head!=NULL){
+        cout<<head->data;
+        head=head->next;
+    }
+}
+int main() {
+    node*head=NULL,*tail=NULL;
+    insertathead(head,tail,1);
+    insertathead(head,tail,2);
+    insertathead(head,tail,3);
+    
+    insertattail(head,tail,6);
+    insertattail(head,tail,7);
+    insertattail(head,tail,8);
+    
+    insertatanyposition(head,tail,0,0);
+    insertatanyposition(head,tail,9,8);
+    insertatanyposition(head,tail,4,4);
+    insertatanyposition(head,tail,5,5);
+    
+    deleteathead(head,tail);
+    deleteathead(head,tail);
+    
+    deleteattail(head,tail);
+    deleteattail(head,tail);
+    
+    deleteatanyposi(head,tail,2);
+    deleteatanyposi(head,tail,3);
+    printll(head);
+    cout<<endl;
+    cout<<lengthofll(head);
+	return 0;
+}
